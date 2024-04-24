@@ -7,7 +7,7 @@ defmodule Chain.Block do
     timestamp = :os.system_time(:millisecond)
     prev_hash = last_block.hash
     new_block = build(new_index, timestamp, data, prev_hash)
-    [new_block] ++ chain
+    [new_block | chain]
   end
 
   def build(new_index, timestamp, data, prev_hash) do
