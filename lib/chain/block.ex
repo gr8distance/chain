@@ -37,16 +37,13 @@ defmodule Chain.Block do
 
   defp compute_hash(index, timestamp, data, prev_hash) do
     [index, timestamp, data, prev_hash]
+    |> Enum.map(&to_json/1)
     |> Enum.join()
     |> to_hash()
     |> Base.encode16(case: :lower)
   end
 
   defp to_hash(str), do: :crypto.hash(:sha256, str)
-end
 
-defimpl String.Chars, for: Map do
-  def to_string(map) do
-    Jason.encode!(map)
-  end
+  defp to_json(value), do: Jason.encode!(value)
 end
