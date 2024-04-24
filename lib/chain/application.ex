@@ -5,7 +5,8 @@ defmodule Chain.Application do
     import Supervisor.Spec, warn: false
 
     children = [
-      {Chain.Server, []}
+      {Chain.Server, []},
+      {Chain.TransactionPool, []}
     ]
 
     opts = [strategy: :one_for_one, name: Chain.Supervisor]
