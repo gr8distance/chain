@@ -1,4 +1,6 @@
 defmodule Chain do
+  alias Chain.Block
+
   @moduledoc """
   Documentation for `Chain`.
   """
@@ -11,7 +13,11 @@ defmodule Chain do
     Chain.Block.build(new_index, timestamp, data, prev_hash)
   end
 
-  def validate_chain(chain) do
-    # チェーンが有効かどうかを検証するロジック
+  @spec validate([Block.t()]) :: boolean()
+  def validate([_genesis_block]), do: true
+
+  def validate([current_block, previous_block | rest]) do
+    valid_hash = Block.valid?(current_block, previous_block)
+    valid_hash && validate([previous_block | rest])
   end
 end

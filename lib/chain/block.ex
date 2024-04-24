@@ -7,7 +7,7 @@ defmodule Chain.Block do
     timestamp = :os.system_time(:millisecond)
     prev_hash = last_block.hash
     new_block = build(new_index, timestamp, data, prev_hash)
-    chain ++ [new_block]
+    [new_block] ++ chain
   end
 
   def build(new_index, timestamp, data, prev_hash) do
@@ -20,7 +20,20 @@ defmodule Chain.Block do
     }
   end
 
+  def valid?(current_block, previous_block) do
+    current_block.prev_hash == compute_hash(previous_block)
+  end
+
   require IEx
+
+  defp compute_hash(block) do
+    compute_hash(
+      block.index,
+      block.timestamp,
+      block.data,
+      block.prev_hash
+    )
+  end
 
   defp compute_hash(index, timestamp, data, prev_hash) do
     [index, timestamp, data, prev_hash]
